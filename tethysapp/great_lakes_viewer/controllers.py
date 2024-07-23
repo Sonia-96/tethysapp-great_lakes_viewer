@@ -5,13 +5,14 @@ from tethys_sdk.routing import controller
 from tethys_sdk.layouts import MapLayout
 from .app import GreatLakesViewer as app
 
+
 @controller(name='home', app_workspace=True)
 class GreatLakesViewer(MapLayout):
     app = app
     base_template = 'great_lakes_viewer/base.html'
     map_title = 'Great Lakes Viewer'
-    
-    basemaps=["OpenStreetMap"]
+
+    basemaps=["OpenStreetMap", "ESRI"]
     default_map_extent = [-95.48678973290308, 39.469776324236335, -71.79882218561728, 51.10826350669163]
     show_properties_popup = True
     plot_slide_sheet = True
