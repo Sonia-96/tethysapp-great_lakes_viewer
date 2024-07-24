@@ -10,7 +10,7 @@ class GreatLakesViewer(TethysAppBase):
     description = ''
     package = 'great_lakes_viewer'  # WARNING: Do not change this value
     index = 'home'
-    icon = f'{package}/images/image001.png'
+    icon = f'{package}/images/imageoo1.png'
     root_url = 'great-lakes-viewer'
     color = '#2980b9'
     tags = ''
