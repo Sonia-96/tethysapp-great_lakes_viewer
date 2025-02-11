@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import requests
 import pandas as pd
 from tethys_sdk.routing import controller
 from tethys_sdk.layouts import MapLayout
@@ -16,7 +17,6 @@ class GreatLakesViewer(MapLayout):
     default_map_extent = [-95.48678973290308, 39.469776324236335, -71.79882218561728, 51.10826350669163]
     show_properties_popup = True
     plot_slide_sheet = True
-    show_map_click_popup = True
     
     def compose_layers(self, request, map_view, app_workspace, *args, **kwargs):
         """
@@ -82,37 +82,37 @@ class GreatLakesViewer(MapLayout):
             str, list<dict>, dict: plot title, data series, and layout options, respectively.
         """
         
-        data_directory = Path(app_workspace.path) / 'data'
-        
-        name = feature_props.get('NAMEEN')
-        if 'Michigan' in name or 'Huron' in name:
-            name = 'Lake Michigan-Huron'
-        elif 'Clair' in name:
-            name = 'Lake St.Clair'
-        
-        layout = {
-            'yaxis': {
-                'title': 'Water Level (feet)'
-            }, 
-            'xaxis': {
-                'title': 'Month'
-            }
-        }
-        
-        output_path = data_directory / f'{name}.csv'
-        
-        df = pd.read_csv(output_path)
-        data = [
-            {
-                'name': 'Water Levels',
-                'mode': 'lines',
-                'x': df['Month'].to_list(),
-                'y': df.iloc[:, 1].to_list(),
-                'line': {
-                    'width': 2,
-                    'color': 'blue'
+        reach_id = feature_props.get('ReachID')
+        url = f'https://api.water.noaa.gov/nwps/v1/gauges/{reach_id}/stageflow'
+        response = requests.get(url)
+        # Check if the request was successful
+        if response.status_code == 200:
+            data = response.json()  # Parse JSON response
+            df_observed = pd.DataFrame(data['observed']['data'])
+            df_forecast = pd.DataFrame(data['forecast']['data'])
+            data = [
+                {
+                    'name': 'Observed',
+                    'mode': 'lines',
+                    'x':df_observed['validTime'].to_list(),
+                    'y': df_observed['primary'].to_list()
+                },
+                {
+                    'name': 'Forecast',
+                    'mode': 'lines',
+                    'x':df_forecast['validTime'].to_list(),
+                    'y': df_forecast['primary'].to_list()
                 }
-            },
-        ]
-        
-        return f'Monthly Mean Water Levels - {name}', data, layout
+            ]
+            layout = {
+                'yaxis': {
+                    'title': 'Stage (feet)'
+                }, 
+                'xaxis': {
+                    'title': 'Time'
+                }
+            }
+            return f'Data - {reach_id}', data, layout
+        else:
+            print(f"Request failed with status code {response.status_code}: {response.text}")
+            return None, None, None
