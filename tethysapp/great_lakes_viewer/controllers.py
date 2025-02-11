@@ -16,6 +16,7 @@ class GreatLakesViewer(MapLayout):
     default_map_extent = [-95.48678973290308, 39.469776324236335, -71.79882218561728, 51.10826350669163]
     show_properties_popup = True
     plot_slide_sheet = True
+    show_map_click_popup = True
     
     def compose_layers(self, request, map_view, app_workspace, *args, **kwargs):
         """
@@ -24,49 +25,46 @@ class GreatLakesViewer(MapLayout):
         
         # Load GeoJSON from files
         geojson_dir = Path(app_workspace.path) / 'geojson'
-        lake_names = ['Superior', 'Michigan', 'Huron', 'StClair', 'Erie', 'Ontario']
-        
-        lake_layers = []
-        for lake_name in lake_names:
-            path = geojson_dir / f'Lake{lake_name}.geojson'
-            with open(path) as file:
-                geojson = json.loads(file.read())
-                geojson_layer = self.build_geojson_layer(
-                    geojson=geojson,
-                    layer_name=f'Lake {lake_name}',
-                    layer_title=f'Lake {lake_name}',
-                    layer_variable=f'{lake_name}',
-                    visible=True,
-                    selectable=True,
-                    plottable=True,
-                    excluded_properties=['HYDRO_P_', 'UIDENT', 'NAMESP', 'NAMEFR', 'TYPE', 'NAMEEN'],
-                )
-                lake_layers.append(geojson_layer)
+        path = geojson_dir / 'NewPoints.geojson'
+        with open (path) as file:
+            geojson = json.loads(file.read())
+            geojson_layer = self.build_geojson_layer(
+                geojson=geojson,
+                layer_name=f'Points',
+                layer_title=f'Points',
+                layer_variable='point',
+                visible=True,
+                selectable=True,
+                plottable=True
+            )
         
         # Create layer groups
         layer_groups = [
             self.build_layer_group(
-                id='great-lakes',
-                display_name='Great Lakes',
+                id='points',
+                display_name='20 Points',
                 layer_control='checkbox',  # 'checkbox' or 'radio'
-                layers=lake_layers
+                layers=[geojson_layer]
             )
         ]
 
         return layer_groups
-        
+    
     @classmethod
     def get_vector_style_map(cls):
         return {
-            'MultiPolygon': {'ol.style.Style': {
-                'stroke': {'ol.style.Stroke': {
-                    'color': 'navy',
-                    'width': 1
-                }},
-                'fill': {'ol.style.Fill': {
-                    'color': 'rgba(0, 25, 128, 0.1)'
+            'Point': {'ol.style.Style': {
+                'image': {'ol.style.Circle': {
+                    'radius': 5,
+                    'fill': {'ol.style.Fill': {
+                        'color': 'white',
+                    }},
+                    'stroke': {'ol.style.Stroke': {
+                        'color': 'red',
+                        'width': 3
+                    }}
                 }}
-            }},
+            }}
         }
         
     def get_plot_for_layer_feature(self, request, layer_name, feature_id, layer_data, feature_props, app_workspace,
