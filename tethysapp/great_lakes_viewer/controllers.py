@@ -83,30 +83,24 @@ class GreatLakesViewer(MapLayout):
         """
         
         reach_id = feature_props.get('ReachID')
-        url = f'https://api.water.noaa.gov/nwps/v1/gauges/{reach_id}/stageflow'
+        url = f'https://api.water.noaa.gov/nwps/v1/reaches/{reach_id}/streamflow?series=short_range'
         response = requests.get(url)
         # Check if the request was successful
         if response.status_code == 200:
             data = response.json()  # Parse JSON response
-            df_observed = pd.DataFrame(data['observed']['data'])
-            df_forecast = pd.DataFrame(data['forecast']['data'])
+            df = pd.DataFrame(data['shortRange']['series']['data'])
+            units = data['shortRange']['series']['units']
             data = [
-                {
-                    'name': 'Observed',
-                    'mode': 'lines',
-                    'x':df_observed['validTime'].to_list(),
-                    'y': df_observed['primary'].to_list()
-                },
                 {
                     'name': 'Forecast',
                     'mode': 'lines',
-                    'x':df_forecast['validTime'].to_list(),
-                    'y': df_forecast['primary'].to_list()
+                    'x':df['validTime'].to_list(),
+                    'y': df['flow'].to_list()
                 }
             ]
             layout = {
                 'yaxis': {
-                    'title': 'Stage (feet)'
+                    'title': f'flow ({units})'
                 }, 
                 'xaxis': {
                     'title': 'Time'
