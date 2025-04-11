@@ -1,0 +1,331 @@
+{
+    "type": "FeatureCollection",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "EPSG:3857"
+        }
+    },
+    "features": [
+        {
+            "type": "Feature",
+            "id": 0,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9318746.3933475465,
+                    5087154.9816786814
+                ]
+            },
+            "properties": {
+                "FID": 0,
+                "Id": 0,
+                "ReachID": 15634673
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 1,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9256344.8335064091,
+                    5059707.3237077203
+                ]
+            },
+            "properties": {
+                "FID": 1,
+                "Id": 0,
+                "ReachID": 15612718
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 2,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9195920.3462860193,
+                    5056841.1140471296
+                ]
+            },
+            "properties": {
+                "FID": 2,
+                "Id": 0,
+                "ReachID": 15605384
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 3,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9086943.2311495952,
+                    5070830.2621662393
+                ]
+            },
+            "properties": {
+                "FID": 3,
+                "Id": 0,
+                "ReachID": 15587072
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 4,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9042243.9207148775,
+                    5118971.737931218
+                ]
+            },
+            "properties": {
+                "FID": 4,
+                "Id": 0,
+                "ReachID": 9848335
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 5,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -8787900.6787742674,
+                    5231404.5440102722
+                ]
+            },
+            "properties": {
+                "FID": 5,
+                "Id": 0,
+                "ReachID": 15582369
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 6,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -8769100.0336212162,
+                    5285888.5039444324
+                ]
+            },
+            "properties": {
+                "FID": 6,
+                "Id": 0,
+                "ReachID": 15576309
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 7,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -8766976.356892908,
+                    5289888.8654283909
+                ]
+            },
+            "properties": {
+                "FID": 7,
+                "Id": 0,
+                "ReachID": 15576299
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 8,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -8752573.6509855259,
+                    5295268.4182120655
+                ]
+            },
+            "properties": {
+                "FID": 8,
+                "Id": 0,
+                "ReachID": 15574737
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 9,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -8767974.4418283515,
+                    5308598.6079002246
+                ]
+            },
+            "properties": {
+                "FID": 9,
+                "Id": 0,
+                "ReachID": 15569727
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 10,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -8754034.9251575489,
+                    5326525.2930453951
+                ]
+            },
+            "properties": {
+                "FID": 10,
+                "Id": 0,
+                "ReachID": 15567933
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 11,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9393737.8657182455,
+                    5053567.2130992543
+                ]
+            },
+            "properties": {
+                "FID": 11,
+                "Id": 0,
+                "ReachID": 15667583
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 12,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9259515.5436522774,
+                    5028941.9813418621
+                ]
+            },
+            "properties": {
+                "FID": 12,
+                "Id": 0,
+                "ReachID": 15612776
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 13,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9316371.4803773668,
+                    5020797.0378482239
+                ]
+            },
+            "properties": {
+                "FID": 13,
+                "Id": 0,
+                "ReachID": 15644224
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 14,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9356044.5678663198,
+                    5014817.2988178991
+                ]
+            },
+            "properties": {
+                "FID": 14,
+                "Id": 0,
+                "ReachID": 15644820
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 15,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9847132.3744693082,
+                    5063708.9091769317
+                ]
+            },
+            "properties": {
+                "FID": 15,
+                "Id": 0,
+                "ReachID": 14780114
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 16,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9880688.5426440705,
+                    5061063.3818730786
+                ]
+            },
+            "properties": {
+                "FID": 16,
+                "Id": 0,
+                "ReachID": 14779428
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 17,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9906225.8200221099,
+                    5060367.5944923814
+                ]
+            },
+            "properties": {
+                "FID": 17,
+                "Id": 0,
+                "ReachID": 14835191
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 18,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -9540202.8140342385,
+                    5533337.8898578128
+                ]
+            },
+            "properties": {
+                "FID": 18,
+                "Id": 0,
+                "ReachID": 12121104
+            }
+        },
+        {
+            "type": "Feature",
+            "id": 19,
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -8451862.7117597107,
+                    5463062.1806285577
+                ]
+            },
+            "properties": {
+                "FID": 19,
+                "Id": 0,
+                "ReachID": 15514728
+            }
+        }
+    ]
+}
