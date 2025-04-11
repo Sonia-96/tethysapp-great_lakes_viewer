@@ -13,43 +13,68 @@ class GreatLakesViewer(MapLayout):
     base_template = 'great_lakes_viewer/base.html'
     map_title = 'Great Lakes Viewer'
 
-    basemaps=["OpenStreetMap", "ESRI"]
+    basemaps = ["OpenStreetMap", "ESRI"]
     default_map_extent = [-95.48678973290308, 39.469776324236335, -71.79882218561728, 51.10826350669163]
     show_properties_popup = True
     plot_slide_sheet = True
-    
+
     def compose_layers(self, request, map_view, app_workspace, *args, **kwargs):
         """
         Add layers to the map
         """
-        
+
         # Load GeoJSON from files
         geojson_dir = Path(app_workspace.path) / 'geojson'
+
+        lake_names = ['Superior', 'Michigan', 'Huron', 'StClair', 'Erie', 'Ontario']
+        lake_layers = []
+        for lake_name in lake_names:
+            path = geojson_dir / f'Lake{lake_name}.geojson'
+            with open(path) as file:
+                geojson = json.loads(file.read())
+                lake_layer = self.build_geojson_layer(
+                    geojson=geojson,
+                    layer_name=f'Lake {lake_name}',
+                    layer_title=f'Lake {lake_name}',
+                    layer_variable=f'{lake_name}',
+                    visible=True,
+                    selectable=True,
+                    plottable=True,
+                    excluded_properties=['HYDRO_P_', 'UIDENT', 'NAMESP', 'NAMEFR', 'TYPE', 'NAMEEN'],
+                )
+                lake_layers.append(lake_layer)
+
         path = geojson_dir / 'NewPoints.geojson'
-        with open (path) as file:
+        with open(path) as file:
             geojson = json.loads(file.read())
-            geojson_layer = self.build_geojson_layer(
+            points_layer = self.build_geojson_layer(
                 geojson=geojson,
-                layer_name=f'Points',
-                layer_title=f'Points',
+                layer_name='Points',
+                layer_title='Points',
                 layer_variable='point',
                 visible=True,
                 selectable=True,
                 plottable=True
             )
-        
+
         # Create layer groups
         layer_groups = [
             self.build_layer_group(
+                id='lakes',
+                display_name='Great Lakes',
+                layer_control='checkbox',
+                layers=lake_layers
+            ),
+            self.build_layer_group(
                 id='points',
                 display_name='20 Points',
-                layer_control='checkbox',  # 'checkbox' or 'radio'
-                layers=[geojson_layer]
+                layer_control='checkbox',
+                layers=[points_layer]
             )
         ]
 
         return layer_groups
-    
+
     @classmethod
     def get_vector_style_map(cls):
         return {
@@ -66,9 +91,9 @@ class GreatLakesViewer(MapLayout):
                 }}
             }}
         }
-        
-    def get_plot_for_layer_feature(self, request, layer_name, feature_id, layer_data, feature_props, app_workspace,
-                                *args, **kwargs):
+
+    def get_plot_for_layer_feature(self, request, layer_name, feature_id, layer_data,
+                                   feature_props, app_workspace, *args, **kwargs):
         """
         Retrieves plot data for given feature on given layer.
 
@@ -81,7 +106,7 @@ class GreatLakesViewer(MapLayout):
         Returns:
             str, list<dict>, dict: plot title, data series, and layout options, respectively.
         """
-        
+
         reach_id = feature_props.get('ReachID')
         url = f'https://api.water.noaa.gov/nwps/v1/reaches/{reach_id}/streamflow?series=short_range'
         response = requests.get(url)
@@ -94,14 +119,14 @@ class GreatLakesViewer(MapLayout):
                 {
                     'name': 'Forecast',
                     'mode': 'lines',
-                    'x':df['validTime'].to_list(),
+                    'x': df['validTime'].to_list(),
                     'y': df['flow'].to_list()
                 }
             ]
             layout = {
                 'yaxis': {
                     'title': f'flow ({units})'
-                }, 
+                },
                 'xaxis': {
                     'title': 'Time'
                 }

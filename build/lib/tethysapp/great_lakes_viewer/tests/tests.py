@@ -13,7 +13,8 @@ To run tests for an app:
 
         conda activate tethys
 
-    2. In portal_config.yml make sure that the default database user is set to tethys_super or is a super user of the database
+    2. In portal_config.yml make sure that the default database user
+       is set to tethys_super or is a super user of the database
         DATABASES:
             default:
                 ENGINE: django.db.backends.postgresql_psycopg2
@@ -31,6 +32,7 @@ To run tests for an app:
 To learn more about writing tests, see:
     https://docs.tethysplatform.org/en/stable/tethys_sdk/testing.html
 """
+
 
 class GreatLakesViewerTestCase(TethysTestCase):
     """
