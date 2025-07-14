@@ -107,31 +107,66 @@ class GreatLakesViewer(MapLayout):
             str, list<dict>, dict: plot title, data series, and layout options, respectively.
         """
 
-        reach_id = feature_props.get('ReachID')
-        url = f'https://api.water.noaa.gov/nwps/v1/reaches/{reach_id}/streamflow?series=short_range'
-        response = requests.get(url)
+        is_points_layer = 'ReachID' in feature_props
+        if is_points_layer:
+            reach_id = feature_props.get('ReachID')
+            url = f'https://api.water.noaa.gov/nwps/v1/reaches/{reach_id}/streamflow?series=short_range'
+            response = requests.get(url)          
         # Check if the request was successful
-        if response.status_code == 200:
-            data = response.json()  # Parse JSON response
-            df = pd.DataFrame(data['shortRange']['series']['data'])
-            units = data['shortRange']['series']['units']
-            data = [
-                {
-                    'name': 'Forecast',
-                    'mode': 'lines',
-                    'x': df['validTime'].to_list(),
-                    'y': df['flow'].to_list()
+            if response.status_code == 200:
+                data = response.json()  # Parse JSON response
+                df = pd.DataFrame(data['shortRange']['series']['data'])
+                units = data['shortRange']['series']['units']
+                data = [
+                    {
+                        'name': 'Forecast',
+                        'mode': 'lines',
+                        'x': df['validTime'].to_list(),
+                        'y': df['flow'].to_list()
+                    }
+                ]
+                layout = {
+                    'yaxis': {
+                        'title': f'flow ({units})'
+                    },
+                    'xaxis': {
+                        'title': 'Time'
+                    }
                 }
-            ]
+                return f'Data - {reach_id}', data, layout
+            else:
+                print(f"Request failed with status code {response.status_code}: {response.text}")
+                return None, None, None
+        else:
+            data_directory = Path(app_workspace.path) / 'data'     
+            name = feature_props.get('NAMEEN')
+            if 'Michigan' in name or 'Huron' in name:
+                name = 'Lake Michigan-Huron'
+            elif 'Clair' in name:
+                name = 'Lake St.Clair'
+            
             layout = {
                 'yaxis': {
-                    'title': f'flow ({units})'
-                },
+                    'title': 'Water Level (feet)'
+                }, 
                 'xaxis': {
-                    'title': 'Time'
+                    'title': 'Month'
                 }
             }
-            return f'Data - {reach_id}', data, layout
-        else:
-            print(f"Request failed with status code {response.status_code}: {response.text}")
-            return None, None, None
+        
+            output_path = data_directory / f'{name}.csv'
+            df = pd.read_csv(output_path)
+            data = [
+                {
+                    'name': 'Water Levels',
+                    'mode': 'lines',
+                    'x': df['Month'].to_list(),
+                    'y': df.iloc[:, 1].to_list(),
+                    'line': {
+                        'width': 2,
+                        'color': 'blue'
+                    }
+                },
+            ]
+            
+            return f'Monthly Mean Water Levels - {name}', data, layout
